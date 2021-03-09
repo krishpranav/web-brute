@@ -225,3 +225,25 @@ print color('bold white')," - ";
 print color("bold red"), "Unknown";
 }
 }
+
+###### GET WP USER #######
+sub wpuser{
+print color('reset');
+$user = $site . '/?author=1';
+
+$getuser = $ua->get($user)->content;
+if($getuser =~/author\/(.*?)\//){
+$wpuser=$1;
+print color('bold red'),"\n [";
+print color('bold green'),"+";
+print color('bold red'),"] ";
+print color('bold white'),"Username: $wpuser\n";
+wp();
+}
+else {
+print color('bold red'),"\n [";
+print color('bold green'),"+";
+print color('bold red'),"] ";
+print color('bold white'),"Can't Get Username\n";
+}
+}
