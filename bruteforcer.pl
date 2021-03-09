@@ -187,3 +187,41 @@ cms();
 }
 }
 }
+
+################ CMS DETCTER #####################
+sub cms(){
+$magsite = $site . '/admin';
+my $magcms = $ua->get("$magsite")->content;
+my $cms = $ua->get("$site")->content;
+if($cms =~/wp-content|wordpress/) {
+print color('bold white')," - ";
+print color("bold green"), "WordPress";
+wpuser();
+}
+
+elsif($cms =~/<script type=\"text\/javascript\" src=\"\/media\/system\/js\/mootools.js\"><\/script>| \/media\/system\/js\/|com_content|Joomla!/) {
+print color('bold white')," - ";
+print color("bold green"), "Joomla";
+joomla();
+}
+elsif($cms =~/Drupal|drupal|sites\/all|drupal.org/) {
+print color('bold white')," - ";
+print color("bold green"), "Drupal";
+drupal();
+}
+
+elsif($cms =~/route=product|OpenCart|route=common|catalog\/view\/theme/) {
+print color('bold white')," - ";
+print color("bold green"), "OpenCart";
+opencart();
+}
+
+elsif($magcms =~/Log into Magento Admin Page|name=\"dummy\" id=\"dummy\"|Magento/) {
+   print color("bold green"), " - Magento";
+magento();
+}
+else{
+print color('bold white')," - ";
+print color("bold red"), "Unknown";
+}
+}
