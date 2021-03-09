@@ -149,3 +149,41 @@ print color('bold white'),"$site";
 opencart();
 }
 }
+
+if($number eq '5')
+{
+
+    open (THETARGET, "<$list") || die "[-] Can't open the file";
+@TARGETS = <THETARGET>;
+close THETARGET;
+$link=$#TARGETS + 1;
+
+OUTER: foreach $site(@TARGETS){
+chomp($site);
+
+print color('bold red'),"\n\n [";
+print color('bold green'),"+";
+print color('bold red'),"] ";
+print color('bold white'),"$site";
+magento();
+}
+}
+if($number eq '6')
+{
+
+    open (THETARGET, "<$list") || die "[-] Can't open the file";
+@TARGETS = <THETARGET>;
+close THETARGET;
+$link=$#TARGETS + 1;
+
+OUTER: foreach $site(@TARGETS){
+chomp($site);
+
+print color('bold red'),"\n\n [";
+print color('bold green'),"+";
+print color('bold red'),"] ";
+print color('bold white'),"$site";
+cms();
+}
+}
+}
