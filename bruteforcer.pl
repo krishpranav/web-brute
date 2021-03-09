@@ -93,3 +93,21 @@ OUTER: foreach $site(@TARGETS){
     wpuser();
 }
 }
+if($number eq '2')
+{
+open (THETARGET, "<$list") || die "cant open the file";
+@TARGETS = <THETARGET>;
+close THETARGET;
+$link=$#TARGETS + 1;
+
+OUTER: foreach $site(@TARGETS){
+
+chomp($site);
+
+print color('bold red'), "\n\n [";
+print color('bold green'),"+";
+print color('bold red'),"] ";
+print color('bold white'), "$site";
+joomla();
+}
+}
