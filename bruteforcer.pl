@@ -111,3 +111,22 @@ print color('bold white'), "$site";
 joomla();
 }
 }
+
+if($number eq '3')
+{
+
+    open (THETARGET, "<$list") || die "[-] Can't open the file";
+@TARGETS = <THETARGET>;
+close THETARGET;
+$link=$#TARGETS + 1;
+
+OUTER: foreach $site(@TARGETS){
+chomp($site);
+
+print color('bold red'),"\n\n [";
+print color('bold green'),"+";
+print color('bold red'),"] ";
+print color('bold white'),"$site";
+drupal();
+}
+}
